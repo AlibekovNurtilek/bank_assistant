@@ -5,8 +5,8 @@ URL = "https://chat.aitil.kg/suroo"
 payload = {
     "model": "aitil",
     "messages": [
-        {"role": "system", "content": "Сен акылдуу банк ассистентисин. Кайсы тилде суроо берилсе ошол тилде жооп бер"},
-        {"role": "user", "content": "Салам, Кандайсын? Менин эсебимде канча акчам бар?"}
+        {"role": "system", "content": "КАЙСЫ ТИЛДЕ СУРОО БЕРИЛСЕ ОШОЛ ТИЛДЕ ЖООП БЕР М:На русском, кыргызча, english БИР ГАНА ТИЛДЕ ЖООП БЕР"},
+        {"role": "user", "content": "привет как дела"}
     ],
     "temperature": 0.5,
     "max_tokens": 200,

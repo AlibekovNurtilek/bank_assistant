@@ -33,4 +33,4 @@ pytest-asyncio==0.23.8
 httpx
 sseclient-py
 bcrypt
-
+itsdangerous
