@@ -1,0 +1,404 @@
+{
+    "loans": {
+      "auto_loans": {
+        "salon_new_car": {
+          "name": "Салондон унаа үчүн насыя",
+          "currency": [
+            "KGS",
+            "RUB",
+            "USD"
+          ],
+          "term": "1 айдан 60 айга чейин",
+          "collateral": "Сатып алынуучу унаа",
+          "descr": "Автоунаа салонунан жаңы унаа сатып алууга арналган насыя. Келишим түзүлгөн күнү толук төлөмдү алууга болот."
+        },
+        "standard": {
+          "name": "Стандарттык авто насыя",
+          "currency": [
+            "KGS",
+            "USD"
+          ],
+          "min_amount": "50 000 сом",
+          "max_amount": "3 000 000 сом (KGS) / 35 000 USD",
+          "term": "6 айдан 36 айга чейин",
+          "interest_rate": "Жылдык 22% баштап",
+          "collateral": "Сатып алынуучу унаа жана/же жеке кепилдик",
+          "grace_period": "Жок",
+          "requirements": [
+            "Айдоочулук күбөлүк (милдеттүү эмес, бирок кааланат)",
+            "Баштапкы төлөм: 15% (жаңы унаага), 20% (колдонулган унаага)",
+            "Баштапкы төлөм: жаңы унаага 30%",
+            "Баштапкы төлөм: колдонулган унаага 40-50% (5 жылга чейин)",
+            "Баштапкы төлөм: колдонулган унаага 50% (5 жылдан ашык)",
+            "КР жаранынын паспорту",
+            "Туруктуу киреше"
+          ],
+          "benefits": [
+            "Айлык маяна долбоорунун катышуучулары үчүн 300 000 сомго чейин күрөөсүз, кепилсиз",
+            "Жаңы жана колдонулган унаалар үчүн",
+            "Жаңы же колдонулган автоунаа сатып алуу мүмкүнчүлүгү",
+            "Ийкемдүү төлөө графиги",
+            "Насыя берүү чечими тез кабыл алынат"
+          ],
+          "descr": "Бул насыя жаңы же колдонулган автоунаа сатып алууга арналган. Шарттарга жараша унаанын өзү же жеке кепилдик талап кылынышы мүмкүн."
+        },
+        "new_from_dealership": {
+          "name": "Автоунаа насыясы (Автосалондон жаңы автоунаа)",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": "Автосалондон жаңы автоунаа сатып алуу үчүн насыя."
+        },
+        "general": {
+          "name": "Автокредит",
+          "currency": [],
+          "min_amount": "N/A",
+          "max_amount": "N/A",
+          "term": "N/A",
+          "interest_rate": "N/A",
+          "collateral": "N/A",
+          "grace_period": "N/A",
+          "requirements": [],
+          "benefits": [],
+          "descr": "Автомобильный кредит. Конкретные условия и детали продукта не указаны в предоставленном тексте."
+        },
+        "new_car_dealership": {
+          "name": "Автосалондон жаңы автоунаа алуу үчүн насыя",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "new_car_from_dealership": {
+          "name": "Автосалондон жаңы автоунаа алуу үчүн насыя",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": "Жаңы автоунааны автосалондон сатып алууга арналган насыя."
+        }
+      },
+      "personal_loans": {
+        "standard": {
+          "name": "Керектөөчү насыя",
+          "currency": [
+            "KGS",
+            "USD"
+          ],
+          "min_amount": "50 000 сом (KGS) / 500 USD",
+          "max_amount": "1 000 000 сом (KGS) / 10 000 USD",
+          "term": "3 айдан 60 айга чейин",
+          "interest_rate": "22% жылдык (KGS) / 12% жылдык (USD)",
+          "collateral": "Керек эмес (500 000 сомго чейин)",
+          "grace_period": "Жок",
+          "requirements": [
+            "Документтердин минималдуу топтому",
+            "КР жаранынын паспорту",
+            "Айлык маяна долбооруна катышуу (күрөөсүз 500 000 сомго чейин алуу үчүн)",
+            "Минималдуу документтер",
+            "Паспорт",
+            "Туруктуу киреше булагы",
+            "Туруктуу кирешени тастыктоо",
+            "Туруктуу каттоо",
+            "Туруктуу каттоо же жашаган жери боюнча тастыктама"
+          ],
+          "benefits": [
+            "Батир жана үйлөрдө оңдоо-түзөө иштерине",
+            "Бир күндө чечилет",
+            "Каалаган максаттарга берилет",
+            "Керектөөчү максаттардын кеңири спектри",
+            "Күрөөсүз (500 000 сомго чейин)",
+            "Кепилсиз (300 000 сомго чейин)",
+            "Минималдуу документтер",
+            "Минималдуу документтер талап кылынат",
+            "Окуу акысын төлөө ж.б. үчүн",
+            "Онлайн арыз берүү",
+            "Салтанаттуу майрамдык иш-чараларды өткөрүүгө",
+            "Саякаттарга",
+            "Тез арада каралат",
+            "Үйдөн чыкпай алуу мүмкүнчүлүгү",
+            "Ыңгайлуу жана ийкемдүү төлөө графиги",
+            "Ыңгайлуу мөөнөттөр",
+            "Жеке керектөө үчүн товарларды сатып алууга"
+          ],
+          "descr": "Бул насыя керектөөчү максаттар үчүн берилет, мисалы, үй тиричилик техникасын сатып алуу, билим алуу, майрамдык чыгымдар ж.б. Банктын эрежелерине ылайык кепилсиз же кепилдик менен берилиши мүмкүн."
+        },
+        "partner_offer": {
+          "name": "Өнөктөштөрдөн атайын сунуш",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": "Банктын өнөктөштөрү аркылуу берилүүчү атайын насыя сунушу."
+        },
+        "general": {
+          "name": "Насыялар",
+          "currency": [],
+          "min_amount": "N/A",
+          "max_amount": "N/A",
+          "term": "N/A",
+          "interest_rate": "N/A",
+          "collateral": "N/A",
+          "grace_period": "N/A",
+          "requirements": [],
+          "benefits": [],
+          "descr": "Общая категория кредитов для физических лиц. Конкретные условия и детали продуктов (минимальная/максимальная сумма, срок, процентная ставка, залог, льготный период, требования и преимущества) не указаны в предоставленном тексте."
+        },
+        "universal": {
+          "name": "Ар кандай максаттар үчүн насыя",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "express": {
+          "name": "Экспресс насыя",
+          "currency": [
+            "KGS"
+          ],
+          "min_amount": "10 000 сом",
+          "max_amount": "200 000 сом",
+          "term": "1 айдан 24 айга чейин",
+          "interest_rate": "26% жылдык",
+          "collateral": "Жок",
+          "grace_period": "жок",
+          "requirements": [
+            "КР жаранынын паспорту",
+            "Мобилдик тиркеме аркылуу арыз берүү",
+            "Паспорт",
+            "Расмий киреше булагын тастыктаган документ (мисалы, акыркы 6 ай үчүн эмгек акы жөнүндө маалымкат)"
+          ],
+          "benefits": [
+            "1 мүнөттө бекитүү",
+            "1 мүнөттө чечилет",
+            "Бир күндө чечилет",
+            "Онлайн арыз берүү",
+            "Онлайн арыз берүү мүмкүнчүлүгү",
+            "Үйдөн чыкпай алуу мүмкүнчүлүгү"
+          ],
+          "descr": "Тез арада каралуучу жана чакан суммадагы каржылык муктаждыктарды жабууга арналган насыя. Документтердин минималдуу пакети менен берилет."
+        },
+        "online": {
+          "name": "Онлайн насыя",
+          "currency": [
+            "KGS"
+          ],
+          "min_amount": null,
+          "max_amount": "200 000 сом",
+          "term": null,
+          "interest_rate": "18.99% жылдык",
+          "collateral": null,
+          "grace_period": null,
+          "requirements": null,
+          "benefits": [
+            "1 мүнөттө каралат",
+            "Мобилдик тиркеме аркылуу",
+            "Үйдөн чыкпай эле алуу мүмкүнчүлүгү"
+          ],
+          "descr": "DemirBankтын мобилдик тиркемеси аркылуу тез арада онлайн кредит алууга болот."
+        }
+      },
+      "mortgage_loans": {
+        "standard": {
+          "name": "Ипотекалык насыя",
+          "currency": [
+            "KGS",
+            "USD"
+          ],
+          "min_amount": "500 000 сом (KGS) / 6 000 USD",
+          "max_amount": "15 000 000 сом (KGS) / 180 000 USD",
+          "term": "60 айдан 240 айга чейин (20 жыл)",
+          "interest_rate": "14% жылдык (KGS) / 8% жылдык (USD)",
+          "collateral": "Сатып алынуучу/курулуучу кыймылсыз мүлк",
+          "grace_period": "6 айга чейин (айрым учурларда)",
+          "requirements": [
+            "Баштапкы төлөм: 20% (турак жай сатып алууда), 30% (турак жай курууда)",
+            "КР жаранынын паспорту",
+            "Кыймылсыз мүлккө болгон документтер (эгер бар болсо)",
+            "Мүлк документтери",
+            "Туруктуу жана жетиштүү киреше"
+          ],
+          "benefits": [
+            "Ийкемдүү шарттар",
+            "Төмөн пайыздык чендер",
+            "Узак мөөнөттүү насыялоо",
+            "Үй сатып алууга арналган"
+          ],
+          "descr": "Бул насыя турак жайды сатып алуу, куруу же оңдоо үчүн берилет. Насыянын предмети болгон кыймылсыз мүлк банктын күрөөсүндө болот."
+        },
+        "construction_company_offer": {
+          "name": "Курулуш компанияларынан атайын сунуш",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": "Курулуш компанияларынан атайын сунуш."
+        },
+        "general": {
+          "name": "Ипотека",
+          "currency": [],
+          "min_amount": "N/A",
+          "max_amount": "N/A",
+          "term": "N/A",
+          "interest_rate": "N/A",
+          "collateral": "N/A",
+          "grace_period": "N/A",
+          "requirements": [],
+          "benefits": [],
+          "descr": "Ипотечный кредит. Конкретные условия и детали продукта не указаны в предоставленном тексте."
+        },
+        "special_construction_offer": {
+          "name": "Курулуш компанияларынан атайын сунуш",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": "Курулуш компаниялары менен биргеликте атайын шарттарда берилүүчү ипотекалык насыя."
+        }
+      },
+      "business_loans": {
+        "business_development": {
+          "name": "Ишкананы өнүктүрүү үчүн кредиттер",
+          "currency": [],
+          "min_amount": "N/A",
+          "max_amount": "N/A",
+          "term": "N/A",
+          "interest_rate": "N/A",
+          "collateral": "N/A",
+          "grace_period": "N/A",
+          "requirements": [],
+          "benefits": [],
+          "descr": "Кредиты для развития бизнеса. Конкретные условия и детали продукта не указаны в предоставленном тексте."
+        },
+        "kyrseff_program": {
+          "name": "«Кирешелүү» насыясы (KyrSEFF программасы)",
+          "currency": [],
+          "min_amount": "N/A",
+          "max_amount": "N/A",
+          "term": "N/A",
+          "interest_rate": "N/A",
+          "collateral": "N/A",
+          "grace_period": "N/A",
+          "requirements": [],
+          "benefits": [],
+          "descr": "Кредит по программе KyrSEFF. Конкретные условия и детали продукта не указаны в предоставленном тексте."
+        },
+        "working_capital": {
+          "name": "Обороттук капитал үчүн насыя",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "investment_projects": {
+          "name": "Инвестициялык долбоорлор үчүн насыя",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "borusan_makina": {
+          "name": "«Борусан Макина Кыргызстан» насыясы",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "kyrseff": {
+          "name": "KYRSEFF “Кирешелүү” насыясы",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "agro_credits": {
+          "name": "Агрокредиттер",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        },
+        "overdraft": {
+          "name": "Овердрафт",
+          "currency": [],
+          "min_amount": null,
+          "max_amount": null,
+          "term": null,
+          "interest_rate": null,
+          "collateral": null,
+          "grace_period": null,
+          "requirements": [],
+          "benefits": [],
+          "descr": null
+        }
+      }
+    }
+}
