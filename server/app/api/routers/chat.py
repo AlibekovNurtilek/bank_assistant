@@ -18,13 +18,13 @@ async def chat(
 ):
     llm_client = build_llm_client()
 
-    return StreamingResponse(
-        llm_client.astream_answer(
-            message=payload.message,
-            user=current_user,
-            language=payload.language or "ky",
-        ),
-        media_type="text/event-stream",
-    )
+    # return StreamingResponse(
+    #     llm_client.astream_answer(
+    #         message=payload.message,
+    #         user=current_user,
+    #         language=payload.language or "ky",
+    #     ),
+    #     media_type="text/event-stream",
+    # )
     result = await llm_client.respond(message=payload.message, user=current_user)  # <— await!
     return JSONResponse(result)

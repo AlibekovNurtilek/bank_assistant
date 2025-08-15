@@ -4,24 +4,62 @@ from typing import Any, AsyncGenerator, Dict, List, Optional
 import logging
 logger = logging.getLogger(__name__)
 from app.db.models import Customer
-
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+import shlex
+from app.services.mcp_services.tool_arguments import filter_tool_args
 import httpx
 
-# System prompt is authoritative and already includes tools. DO NOT modify it.
 from app.services.llm_services.system_promt import get_system_prompt
 
+async def call_mcp_tool(tool_name: str, tool_args: dict):
+    params = StdioServerParameters(
+        command="python",
+        args=["-m", "app.mcp.mcp_server"],
+    )
 
+    async with stdio_client(params) as (read, write):
+        async with ClientSession(read, write) as session:
+            # Сначала инициализация
+            await session.initialize()
+
+            # Немного подождать, чтобы тулзы успели зарегистрироваться
+            import asyncio
+            await asyncio.sleep(0.5)
+
+            # Берём список тулов, чтобы убедиться, что есть нужный
+            tools = await session.list_tools()
+            if not any(t.name == tool_name for t in tools.tools):
+                raise ValueError(f"Tool {tool_name} not found on MCP server")
+
+            # Вызываем инструмент
+            result = await session.call_tool(tool_name, tool_args)
+            return result.content[0].text if result.content else None
+
+
+_FUNC_RE = re.compile(r"^name=(?P<name>[^,]+)(?:\s*,\s*(?P<args>.*))?$",re.DOTALL)
+_ARG_RE  = re.compile(r"\s*(?P<k>\w+)\s*=\s*(?P<v>.+?)\s*(?=,\s*\w+=|$)")
 FUNC_CALL_PATTERN = re.compile(r"\[FUNC_CALL:(.*?)\]", re.DOTALL)
+
+def _parse_func_call(s: str) -> tuple[str, Dict[str, Any]]:
+    m = _FUNC_RE.match(s.strip())
+    if not m:
+        raise ValueError(f"Bad func_call format: {s}")
+    name = m.group("name").strip()
+    args = m.group("args") or ""
+    kwargs: Dict[str, Any] = {}
+    for kv in _ARG_RE.finditer(args):
+        k = kv.group("k")
+        v = kv.group("v")
+        # снять кавычки, если есть
+        if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+            v = v[1:-1]
+        kwargs[k] = v
+    return name, kwargs
+
 
 
 class PromptBuilder:
-    """
-    Minimal, strict builder per your constraints:
-    - Uses *exactly* the system prompt returned by get_system_prompt(language)
-    - Optionally injects a compact user profile as a separate `user` message
-    - Ignores conversation history for now (as requested)
-    - Leaves tools entirely to the system prompt (no extra sections)
-    """
 
     def __init__(self, system_prompt: str) -> None:
         self.system_prompt = system_prompt
@@ -84,7 +122,6 @@ class AitilLLMClient:
         self.default_language = default_language
         self.request_timeout = request_timeout
 
-    # -------------------- Public API --------------------
     async def astream_answer(
         self,
         message: str,
@@ -101,27 +138,42 @@ class AitilLLMClient:
         async for chunk in self._sse_stream(payload):
             yield chunk
 
-    async def respond(
-        self,
-        message: str,
-        *,
-        language: Optional[str] = None,
-        user: Optional[Customer] = None,
-    ) -> Dict[str, Any]:
+    async def respond(self, message: str, *, language: Optional[str] = None, user: Optional[Customer] = None ) -> Dict[str, Any]:
         payload = self._build_payload(
-            message=message,
-            language=language or self.default_language,
-            user=user,
-            stream=True,
+        message=message,
+        language=language or self.default_language,
+        user=user,
+        stream=True,
         )
         parts: List[str] = []
         async for chunk in self._sse_stream(payload):
             parts.append(chunk)
         full_text = "".join(parts)
+        logger.info("Full response text: %s", full_text)
         func_calls = self._extract_func_calls(full_text)
-        return {"text": full_text, "func_calls": func_calls}
+        if not func_calls:
+            return {full_text}
 
-    # -------------------- Internals --------------------
+        results: List[str] = []
+        for fc in func_calls:
+            try:
+                name, kwargs = _parse_func_call(fc)
+                if user and "customer_id" not in kwargs:
+                    kwargs["customer_id"] = user.id
+                if "lang" not in kwargs:
+                    kwargs["lang"] = language or self.default_language
+                kwargs = filter_tool_args(name, kwargs)
+                logger.info("Calling MCP tool: %s with args: %s", name, kwargs)
+                output = await call_mcp_tool(name, kwargs)
+                results.append(output)
+            except Exception as e:
+                results.append(f"[ERROR calling {fc}: {e}]")
+
+        return {
+            "text": "\n".join(results) if results else full_text,
+            "func_calls": func_calls,
+        }
+
     def _build_payload(
         self,
         *,
@@ -168,8 +220,6 @@ class AitilLLMClient:
     def _extract_func_calls(self, text: str) -> List[str]:
         return [m.group(1).strip() for m in FUNC_CALL_PATTERN.finditer(text)]
 
-
-# -------------------- Factory --------------------
 
 def build_llm_client() -> AitilLLMClient:
     return AitilLLMClient(

@@ -563,7 +563,7 @@ ky_schemas = {
                 "description": "Колдонуучу берген суроо. Суроо FAQ ичиндеги суроолор менен салыштырылып, эң окшош жооп кайтарылат."
             }
         },
-        "required": ["category", "question"]
+        "required": ["category"]
     }
 }
 }

@@ -34,3 +34,4 @@ httpx
 sseclient-py
 bcrypt
 itsdangerous
+pytz
