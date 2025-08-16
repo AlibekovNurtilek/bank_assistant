@@ -2,6 +2,8 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
+
 
 from app.api.deps import get_optional_customer
 from app.schemas.chat import ChatRequest
@@ -26,5 +28,9 @@ async def chat(
     #     ),
     #     media_type="text/event-stream",
     # )
-    result = await llm_client.respond(message=payload.message, user=current_user)  # <— await!
-    return JSONResponse(result)
+    result = await llm_client.respond(
+        message=payload.message,
+        user=current_user,
+        language=payload.language
+    )
+    return JSONResponse(content=jsonable_encoder(result))

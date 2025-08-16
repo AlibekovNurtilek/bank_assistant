@@ -1,7 +1,7 @@
 tools_params = {
     "get_balance": ["customer_id", "lang"],
     "get_transactions": ["customer_id", "limit", "lang"],
-    "transfer_money": ["customer_id", "to_name", "amount", "currency", "lang"],
+    "transfer_money": ["customer_id", "to_account_number", "amount", "currency", "lang"],
     "get_last_incoming_transaction": ["customer_id", "lang"],
     "get_accounts_info": ["customer_id", "lang"],
     "get_incoming_sum_for_period": ["customer_id", "start_date", "end_date", "lang"],

@@ -1,6 +1,6 @@
 import re
 import json
-from typing import Any, AsyncGenerator, Dict, List, Optional
+from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple
 import logging
 logger = logging.getLogger(__name__)
 from app.db.models import Customer
@@ -41,7 +41,47 @@ _FUNC_RE = re.compile(r"^name=(?P<name>[^,]+)(?:\s*,\s*(?P<args>.*))?$",re.DOTAL
 _ARG_RE  = re.compile(r"\s*(?P<k>\w+)\s*=\s*(?P<v>.+?)\s*(?=,\s*\w+=|$)")
 FUNC_CALL_PATTERN = re.compile(r"\[FUNC_CALL:(.*?)\]", re.DOTALL)
 
-def _parse_func_call(s: str) -> tuple[str, Dict[str, Any]]:
+def _coerce_value(v: str) -> Any:
+    """Пытается привести строковое значение к int/float/bool/None/JSON, иначе возвращает исходную строку."""
+    s = v.strip()
+
+    # boolean
+    low = s.lower()
+    if low == "true":
+        return True
+    if low == "false":
+        return False
+
+    # null/none
+    if low in ("null", "none"):
+        return None
+
+    # integer
+    if re.fullmatch(r"[+-]?\d+", s):
+        try:
+            return int(s)
+        except Exception:
+            pass
+
+    # float
+    if re.fullmatch(r"[+-]?\d+\.\d+", s):
+        try:
+            return float(s)
+        except Exception:
+            pass
+
+    # JSON object/array
+    if (s.startswith("{") and s.endswith("}")) or (s.startswith("[") and s.endswith("]")):
+        try:
+            return json.loads(s)
+        except Exception:
+            pass
+
+    # по умолчанию — как строка
+    return s
+
+
+def _parse_func_call(s: str) -> Tuple[str, Dict[str, Any]]:
     m = _FUNC_RE.match(s.strip())
     if not m:
         raise ValueError(f"Bad func_call format: {s}")
@@ -51,12 +91,14 @@ def _parse_func_call(s: str) -> tuple[str, Dict[str, Any]]:
     for kv in _ARG_RE.finditer(args):
         k = kv.group("k")
         v = kv.group("v")
-        # снять кавычки, если есть
-        if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
-            v = v[1:-1]
-        kwargs[k] = v
-    return name, kwargs
 
+        # снять внешние кавычки, если есть
+        if (len(v) >= 2) and ((v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'"))):
+            v = v[1:-1]
+
+        kwargs[k] = _coerce_value(v)
+
+    return name, kwargs
 
 
 class PromptBuilder:
@@ -192,7 +234,7 @@ class AitilLLMClient:
             "temperature": self.temperature,
             "stream": stream,
         }
-        #logger.info("LLM request payload: %s", json.dumps(payload, ensure_ascii=False, indent=2))
+        logger.info("LLM request payload: %s", json.dumps(payload, ensure_ascii=False, indent=2))
 
         return payload
 

@@ -90,9 +90,7 @@ class MessageRole(str, enum.Enum):
 # ========================
 
 class Customer(Base):
-    """
-    Таблица клиентов банка (физические и юридические лица)
-    """
+
     __tablename__ = "customers"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -116,9 +114,7 @@ class Customer(Base):
 
 
 class Account(Base):
-    """
-    Банковские счета клиентов
-    """
+
     __tablename__ = "accounts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -135,13 +131,24 @@ class Account(Base):
     # Связи
     customer: Mapped["Customer"] = relationship(back_populates="accounts")
     cards: Mapped[List["Card"]] = relationship(back_populates="account")
-    transactions: Mapped[List["Transaction"]] = relationship(back_populates="account")
 
+    # 🔹 Разделяем транзакции на исходящие и входящие.
+    outgoing_transactions: Mapped[List["Transaction"]] = relationship(
+        "Transaction",
+        back_populates="from_account",
+        foreign_keys="Transaction.from_account_id",
+        # при необходимости можно добавить overlaps, если где-то пересекается конфигурация:
+        # overlaps="incoming_transactions,to_account"
+    )
+    incoming_transactions: Mapped[List["Transaction"]] = relationship(
+        "Transaction",
+        back_populates="to_account",
+        foreign_keys="Transaction.to_account_id",
+        # overlaps="outgoing_transactions,from_account"
+    )
 
 class Card(Base):
-    """
-    Банковские карты, привязанные к счетам
-    """
+
     __tablename__ = "cards"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -158,25 +165,49 @@ class Card(Base):
     account: Mapped["Account"] = relationship(back_populates="cards")
 
 
+# --- Transaction ---
 class Transaction(Base):
-    """
-    Финансовые транзакции по счетам
-    """
+
     __tablename__ = "transactions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    account_id: Mapped[int] = mapped_column(ForeignKey("accounts.id"))
+
+    # Явные источник/получатель
+    from_account_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("accounts.id"), nullable=True, index=True
+    )
+    to_account_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("accounts.id"), nullable=True, index=True
+    )
+
     transaction_type: Mapped[TransactionType] = mapped_column(Enum(TransactionType))
     amount: Mapped[Numeric] = mapped_column(Numeric(18, 2))
     currency: Mapped[str] = mapped_column(String(3))
     description: Mapped[Optional[str]] = mapped_column(Text)
-    status: Mapped[TransactionStatus] = mapped_column(Enum(TransactionStatus), default=TransactionStatus.pending)
+    status: Mapped[TransactionStatus] = mapped_column(
+        Enum(TransactionStatus), default=TransactionStatus.pending
+    )
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
-    # Связь с аккаунтом
-    account: Mapped["Account"] = relationship(back_populates="transactions")
+    # 🔹 РАНЬШЕ было так (ТЕПЕРЬ УДАЛЯЕМ):
+    # account: Mapped["Account"] = relationship(back_populates="transactions")
+
+    # 🔹 ТЕПЕРЬ две явные связи c указанием foreign_keys:
+    from_account: Mapped[Optional["Account"]] = relationship(
+        "Account",
+        back_populates="outgoing_transactions",
+        foreign_keys=[from_account_id],
+    )
+    to_account: Mapped[Optional["Account"]] = relationship(
+        "Account",
+        back_populates="incoming_transactions",
+        foreign_keys=[to_account_id],
+    )
+
 
 
 class Loan(Base):

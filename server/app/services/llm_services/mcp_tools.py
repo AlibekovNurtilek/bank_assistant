@@ -15,14 +15,14 @@ ky_schemas = {
     },
     "transfer_money": {
         "name": "transfer_money",
-        "description": "Башка колдонуучуга аты боюнча акча которуу.",
+        "description": "башка которуучуга эсеп номери боюнча акча которуу.",
         "parameters": {
             "type": "object",
             "properties": {
-                "to_name": {"type": "string", "description": "Алуучунун аты"},
+                "to_account_number": {"type": "string", "description": "Алуучунун  эсеп номери (IBAN)"},
                 "amount": {"type": "number", "description": "Которуу суммасы"},
             },
-            "required": ["to_name"]
+            "required": ["to_account_number", "amount"]
         }
     },
     "get_last_incoming_transaction": {
@@ -35,7 +35,7 @@ ky_schemas = {
     },
     "get_incoming_sum_for_period": {
         "name": "get_incoming_sum_for_period",
-        "description": "Көрсөтүлгөн аралыкта кирген которуулар (in) жалпы суммасы.",
+        "description": "Көрсөтүлгөн аралыкта кирген которуулар (in) жалпы суммасы. (YYYY-MM-DD)",
         "parameters": {
             "type": "object",
             "properties": {

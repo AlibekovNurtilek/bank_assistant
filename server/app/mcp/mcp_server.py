@@ -65,7 +65,7 @@ async def get_transactions_tool(customer_id: int, limit: int = 5, lang: str = "k
         title = "Акыркы транзакциялар:\n" if lang == "ky" else "Последние транзакции:\n"
         lines = []
         for t in txs:
-            lines.append(f"- {t['type']}: {t['amount']:.2f} {t.get('currency','KGS')} {t['direction']}, {t['timestamp']}")
+            lines.append(f"{t['amount']:.2f} {t.get('currency','KGS')} | {t['from_fullname']} {t['direction']} {t['to_fullname']} | {t['description']} | {t['timestamp']}")
         return title + "\n".join(lines)
 
 
@@ -73,12 +73,12 @@ async def get_transactions_tool(customer_id: int, limit: int = 5, lang: str = "k
     name="transfer_money",
     description="Башка колдонуучуга аты боюнча акча которуу. (params: to_name, amount, currency='KGS', lang: ky|ru)"
 )
-async def transfer_money_tool(customer_id: int, to_name: str, amount: float = 0, currency: str = "KGS", lang: str = "ky"):
+async def transfer_money_tool(customer_id: int, to_account_number: str, amount: float = 0, currency: str = "KGS", lang: str = "ky"):
     async with SessionLocal() as session:
         customer = await _get_customer(session, customer_id)
         if not customer:
             return "Колдонуучу табылган жок." if lang == "ky" else "Пользователь не найден."
-        ok, msg = await transfer_money(session, customer, to_name, amount, currency=currency, lang=lang)
+        ok, msg = await transfer_money(session, customer, to_account_number, amount, currency=currency, lang=lang)
         return msg
 
 
@@ -176,7 +176,7 @@ async def get_largest_transaction_tool(customer_id: int, lang: str = "ky"):
             return "Транзакциялар табылган жок." if lang == "ky" else "Транзакции не найдены."
         return (
             ("Эң чоң транзакция: " if lang == "ky" else "Крупнейшая транзакция: ")
-            + f"{tx['amount']:.2f} {tx.get('currency','KGS')} {tx['direction']}, {tx['timestamp']}"
+            + f"{tx['amount']:.2f} {tx.get('currency','KGS')} | {tx['from_fullname']} {tx['direction']} {tx['to_fullname']} | {tx['description']} | {tx['timestamp']}"
         )
 
 
